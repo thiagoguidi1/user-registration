@@ -1,29 +1,40 @@
-import FormButton from "../../components/FormButton";
-import FormInput from "../../components/FormInput";
-import CardUser from "../../components/CardUser";
+import { useEffect, useState, useRef } from "react";
+import FormButton from "../../components/FormButton.jsx";
+import FormInput from "../../components/FormInput.jsx";
+import CardUser from "../../components/CardUser.jsx";
+import api from "../../services/api.js";
 
 function Home() {
-    {/* Simulate DB */}
-    const users = [
-        {
-            id: "54ads23sa5d",
-            name: "Rodolfo",
-            age: 25,
-            email: "rodolfo@gmail.com",
-        },
-        {
-            id: "qw978weq45",
-            name: "Maria",
-            age: 43,
-            email: "maria@gmail.com",
-        },
-        {
-            id: "45asddas452",
-            name: "Adalberto",
-            age: 47,
-            email: "adalberto@gmail.com",
-        }
-    ];
+    const [users, setUsers] = useState( [] );
+
+    const inputRefName = useRef();
+    const inputRefAge = useRef();
+    const inputRefEmail = useRef();
+ 
+    //List Users
+    async function getUsers() {
+        const usersFromApi = await api.get('/users');
+        setUsers(usersFromApi.data)
+    }
+    //Create Users
+    async function createUsers() {
+        await api.post('/users', {
+            name: inputRefName.current.value,
+            age: inputRefAge.current.value,
+            email: inputRefEmail.current.value
+        });
+        getUsers();
+    }
+    //Delete Users
+    async function deleteUsers(id) {
+        await api.delete(`/users/${id}`);
+        getUsers();
+    }
+
+    useEffect(() => {
+        getUsers();
+    }, [])
+    
     
     return (
         <div className="flex flex-col items-center w-screen min-h-screen p-4 bg-gradient-slate">
@@ -35,16 +46,22 @@ function Home() {
                 <FormInput
                     inputType={"text"}
                     placeholderText={"Insira o nome..."}
+                    inputRef={inputRefName}
                 />
                 <FormInput
                     inputType={"number"}
                     placeholderText={"Insira a idade..."}
+                    inputRef={inputRefAge}
                 />
                 <FormInput
                     inputType={"email"}
                     placeholderText={"Insira o email..."}
+                    inputRef={inputRefEmail}
                 />
-                <FormButton textButton={"CADASTRAR"}/>
+                <FormButton 
+                    textButton={"CADASTRAR"} 
+                    onClick={createUsers} 
+                />
             </form>
 
             {/* User Cards */}
@@ -54,6 +71,7 @@ function Home() {
                     userName={user.name}
                     userAge={user.age}
                     userEmail={user.email}
+                    buttonClick={() => deleteUsers(user.id)}
                 />
             ))}
         </div>
