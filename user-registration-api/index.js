@@ -1,7 +1,6 @@
 /* --- */
 import express from 'express'
 import { PrismaClient } from '@prisma/client';
-import { messageLink } from 'discord.js';
 /* --- */
 
 const prisma = new PrismaClient();
@@ -18,7 +17,7 @@ app.post('/users', async (req, res) => {
             age: req.body.age
         }
     })
-    res.send('Ok, o post deu certo!');
+    res.send('Ok, o POST deu certo!');
 });
 
 // Listar Usuários
