@@ -1,8 +1,8 @@
-<h1 id="topo" align="center">Project Name</h1>
+<h1 id="topo" align="center">Registro de Usuário</h1>
 
-<div align="center">
+<!-- <div align="center">
 <img src="./.github/" alt="Imagem de exemplo">
-</div>
+</div> -->
 
 <br>
 
@@ -35,7 +35,6 @@
 Projeto de cadastro de usuário para treinar e aprender mais sobre CRUD.
 
 <br>
-Pipipi, popopo
 
 </p>
 </div>
