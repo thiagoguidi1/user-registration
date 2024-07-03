@@ -7,9 +7,13 @@ import api from "../../services/api.js";
 function Home() {
     const [users, setUsers] = useState( [] );
 
-    const inputRefName = useRef();
-    const inputRefAge = useRef();
-    const inputRefEmail = useRef();
+    const inputFormRefName = useRef();
+    const inputFormRefAge = useRef();
+    const inputFormRefEmail = useRef();
+
+    const editRefName = useRef();
+    const editRefAge = useRef();
+    const editRefEmail = useRef();
  
     //List Users
     async function getUsers() {
@@ -19,10 +23,19 @@ function Home() {
     //Create Users
     async function createUsers() {
         await api.post('/users', {
-            name: inputRefName.current.value,
-            age: inputRefAge.current.value,
-            email: inputRefEmail.current.value
+            name: inputFormRefName.current.value,
+            age: inputFormRefAge.current.value,
+            email: inputFormRefEmail.current.value
         });
+        getUsers();
+    }
+    //Edit Users
+    async function editUsers(id) {
+        await api.put(`/users/${id}`, {
+            name: editRefName.current.value,
+            age: editRefAge.current.value,
+            email: editRefEmail.current.value
+        })
         getUsers();
     }
     //Delete Users
@@ -46,32 +59,40 @@ function Home() {
                 <FormInput
                     inputType={"text"}
                     placeholderText={"Insira o nome..."}
-                    inputRef={inputRefName}
+                    inputRef={inputFormRefName}
                 />
                 <FormInput
                     inputType={"number"}
                     placeholderText={"Insira a idade..."}
-                    inputRef={inputRefAge}
+                    inputRef={inputFormRefAge}
                 />
                 <FormInput
                     inputType={"email"}
                     placeholderText={"Insira o email..."}
-                    inputRef={inputRefEmail}
+                    inputRef={inputFormRefEmail}
                 />
                 <FormButton 
                     textButton={"CADASTRAR"} 
                     onClick={createUsers} 
-                />
+                /> 
             </form>
 
             {/* User Cards */}
             {users.map((user) => (
                 <CardUser 
+                    // Form Register Part
                     key={user.id}
                     userName={user.name}
                     userAge={user.age}
                     userEmail={user.email}
-                    buttonClick={() => deleteUsers(user.id)}
+                    deleteClick={() => deleteUsers(user.id)}
+
+                    //Card Edit User Part
+                    editNameRef={editRefName}
+                    editAgeRef={editRefAge}
+                    editEmailRef={editRefEmail}
+                    editSubmitButton={() => editUsers(user.id)}
+
                 />
             ))}
         </div>
