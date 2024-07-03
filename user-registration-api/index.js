@@ -65,22 +65,3 @@ app.delete('/users/:id', async (req, res) => {
 });
 
 app.listen(3000);
-
-
-
-
-
-/*
-    Criar nossa API de Usuários
-
-    - Criar um usuário; X
-    - Listar todos os usuários; X
-    - Editar um usuário; X
-    - Deletar um usuário. X
-
-    npx prisma db push
-    npx prisma studio
-
-    node --watch index.js
-
-*/
